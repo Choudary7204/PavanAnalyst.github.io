@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Pavan Kumar P — Data Analyst</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --navy: #0a1628;
+    --blue-dark: #0d2444;
+    --blue-mid: #1a3a6b;
+    --blue-accent: #1e5fd4;
+    --blue-bright: #3b82f6;
+    --cyan: #06b6d4;
+    --cyan-light: #67e8f9;
+    --white: #f8fafc;
+    --gray-light: #cbd5e1;
+    --gray-mid: #64748b;
+    --gold: #f59e0b;
+    --text: #e2e8f0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--navy);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.2rem 4rem;
+    background: rgba(10,22,40,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(59,130,246,0.15);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.3rem;
+    color: var(--cyan);
+    letter-spacing: -0.5px;
+  }
+  .nav-links { display: flex; gap: 2.5rem; }
+  .nav-links a {
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--gray-light);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.25s;
+  }
+  .nav-links a:hover { color: var(--cyan); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 7rem 4rem 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* animated grid background */
+  #hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(30,95,212,0.07) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30,95,212,0.07) 1px, transparent 1px);
+    background-size: 60px 60px;
+    animation: gridPan 20s linear infinite;
+  }
+  @keyframes gridPan {
+    0% { background-position: 0 0; }
+    100% { background-position: 60px 60px; }
+  }
+
+  /* glowing blobs */
+  .blob {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.25;
+    pointer-events: none;
+  }
+  .blob-1 { width: 500px; height: 500px; background: #1e5fd4; top: -100px; right: -100px; animation: drift 8s ease-in-out infinite alternate; }
+  .blob-2 { width: 300px; height: 300px; background: #06b6d4; bottom: 100px; left: 100px; animation: drift 11s ease-in-out infinite alternate-reverse; }
+  @keyframes drift { from { transform: translate(0,0) scale(1); } to { transform: translate(30px,30px) scale(1.1); } }
+
+  .hero-text { position: relative; z-index: 2; }
+  .hero-badge {
+    display: inline-block;
+    padding: 0.35rem 1rem;
+    border: 1px solid var(--cyan);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--cyan);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    animation: fadeUp 0.6s ease both;
+  }
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 6vw, 5rem);
+    font-weight: 800;
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+    animation: fadeUp 0.7s ease both 0.1s;
+  }
+  .hero-name span { color: var(--cyan); }
+  .hero-role {
+    font-size: 1.2rem;
+    font-weight: 300;
+    color: var(--gray-light);
+    margin-bottom: 1.8rem;
+    animation: fadeUp 0.7s ease both 0.2s;
+  }
+  .hero-summary {
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: var(--gray-light);
+    max-width: 480px;
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.7s ease both 0.3s;
+  }
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    animation: fadeUp 0.7s ease both 0.4s;
+  }
+  .btn-primary {
+    padding: 0.75rem 2rem;
+    background: var(--blue-accent);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.25s, transform 0.2s;
+  }
+  .btn-primary:hover { background: var(--blue-bright); transform: translateY(-2px); }
+  .btn-secondary {
+    padding: 0.75rem 2rem;
+    background: transparent;
+    color: var(--cyan);
+    border: 1px solid var(--cyan);
+    border-radius: 6px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.25s, transform 0.2s;
+  }
+  .btn-secondary:hover { background: rgba(6,182,212,0.1); transform: translateY(-2px); }
+
+  /* hero stats strip */
+  .hero-stats {
+    display: flex;
+    gap: 2.5rem;
+    margin-top: 3rem;
+    animation: fadeUp 0.7s ease both 0.5s;
+  }
+  .stat { text-align: left; }
+  .stat-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: var(--cyan);
+    line-height: 1;
+  }
+  .stat-label { font-size: 0.75rem; color: var(--gray-mid); margin-top: 0.25rem; text-transform: uppercase; letter-spacing: 0.05em; }
+
+  /* hero image side */
+  .hero-image-wrap {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 1s ease both 0.3s;
+  }
+  .hero-image-frame {
+    position: relative;
+    width: 340px;
+    height: 400px;
+  }
+  .hero-image-frame::before {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border: 2px solid var(--cyan);
+    border-radius: 16px;
+    opacity: 0.4;
+    animation: pulse 3s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:0.4;transform:scale(1)} 50%{opacity:0.7;transform:scale(1.02)} }
+  .hero-image-frame::after {
+    content: '';
+    position: absolute;
+    inset: -24px;
+    border: 1px solid rgba(6,182,212,0.2);
+    border-radius: 22px;
+  }
+  .hero-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+  }
+  .hero-photo-placeholder {
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--blue-mid), var(--blue-accent));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Syne', sans-serif;
+    font-size: 4rem;
+    font-weight: 800;
+    color: rgba(255,255,255,0.9);
+    letter-spacing: -2px;
+  }
+  .hero-photo-placeholder span { font-size: 0.85rem; font-weight: 400; letter-spacing: 0.1em; color: var(--cyan); margin-top: 0.5rem; font-family: 'DM Sans'; }
+
+  /* floating card */
+  .float-card {
+    position: absolute;
+    background: rgba(13,36,68,0.9);
+    border: 1px solid rgba(59,130,246,0.3);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 0.9rem 1.2rem;
+    animation: float 4s ease-in-out infinite;
+  }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+  .float-card.card-a { bottom: -20px; left: -30px; animation-delay: 0s; }
+  .float-card.card-b { top: 20px; right: -40px; animation-delay: 1.5s; }
+  .float-card .fc-label { font-size: 0.65rem; color: var(--gray-mid); text-transform: uppercase; letter-spacing: 0.08em; }
+  .float-card .fc-value { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--cyan); }
+  .float-card .fc-sub { font-size: 0.7rem; color: var(--gray-light); }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+  /* ── SECTIONS SHARED ── */
+  section { padding: 6rem 4rem; position: relative; }
+  .section-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--cyan);
+    margin-bottom: 0.75rem;
+  }
+  .section-tag::before { content:''; width:24px; height:2px; background:var(--cyan); }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.1;
+    margin-bottom: 3rem;
+  }
+  .section-title em { font-style: normal; color: var(--cyan); }
+
+  /* ── ABOUT / SKILLS ── */
+  #about { background: var(--blue-dark); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .about-text p { font-size: 0.95rem; line-height: 1.8; color: var(--gray-light); margin-bottom: 1rem; }
+
+  .skills-wrap { display: flex; flex-direction: column; gap: 1.2rem; }
+  .skill-item {}
+  .skill-header { display: flex; justify-content: space-between; margin-bottom: 0.45rem; font-size: 0.82rem; color: var(--gray-light); }
+  .skill-bar { height: 6px; background: rgba(255,255,255,0.08); border-radius: 100px; overflow: hidden; }
+  .skill-fill {
+    height: 100%;
+    border-radius: 100px;
+    background: linear-gradient(90deg, var(--blue-accent), var(--cyan));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1s cubic-bezier(0.4,0,0.2,1);
+  }
+  .skill-fill.animate { transform: scaleX(1); }
+
+  /* ── EXPERIENCE ── */
+  #experience { background: var(--navy); }
+  .exp-card {
+    background: rgba(13,36,68,0.6);
+    border: 1px solid rgba(59,130,246,0.18);
+    border-radius: 14px;
+    padding: 2.5rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .exp-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--blue-accent), var(--cyan));
+  }
+  .exp-card:hover { border-color: rgba(59,130,246,0.45); transform: translateY(-4px); }
+  .exp-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1rem; margin-bottom: 1.5rem; }
+  .exp-role { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; color: var(--white); }
+  .exp-company { font-size: 0.9rem; color: var(--cyan); margin-top: 0.3rem; }
+  .exp-period {
+    padding: 0.3rem 0.9rem;
+    background: rgba(30,95,212,0.15);
+    border: 1px solid rgba(30,95,212,0.3);
+    border-radius: 100px;
+    font-size: 0.75rem;
+    color: var(--blue-bright);
+    white-space: nowrap;
+  }
+  .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.7rem; }
+  .exp-bullets li { display: flex; gap: 0.75rem; font-size: 0.88rem; line-height: 1.65; color: var(--gray-light); }
+  .exp-bullets li::before { content:'▹'; color: var(--cyan); flex-shrink: 0; margin-top: 0.05rem; }
+
+  /* ── PROJECTS ── */
+  #projects { background: var(--blue-dark); }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+  .proj-card {
+    background: rgba(10,22,40,0.7);
+    border: 1px solid rgba(59,130,246,0.15);
+    border-radius: 14px;
+    padding: 2rem;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .proj-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--blue-accent), var(--cyan));
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s;
+  }
+  .proj-card:hover { border-color: rgba(6,182,212,0.4); transform: translateY(-5px); }
+  .proj-card:hover::after { transform: scaleX(1); }
+  .proj-icon { font-size: 2rem; margin-bottom: 1rem; }
+  .proj-title { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--white); margin-bottom: 0.75rem; }
+  .proj-desc { font-size: 0.85rem; line-height: 1.7; color: var(--gray-light); }
+  .proj-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.2rem; }
+  .proj-tag {
+    padding: 0.2rem 0.7rem;
+    border-radius: 100px;
+    background: rgba(30,95,212,0.12);
+    border: 1px solid rgba(30,95,212,0.25);
+    font-size: 0.7rem;
+    color: var(--blue-bright);
+    letter-spacing: 0.05em;
+  }
+
+  /* ── SKILLS GRID ── */
+  #skills { background: var(--navy); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+  .skill-cat {
+    background: rgba(13,36,68,0.6);
+    border: 1px solid rgba(59,130,246,0.15);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .skill-cat:hover { border-color: rgba(6,182,212,0.4); transform: translateY(-4px); }
+  .skill-cat-title { font-family: 'Syne', sans-serif; font-size: 0.9rem; font-weight: 700; color: var(--cyan); margin-bottom: 1rem; }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+  .skill-chip {
+    padding: 0.2rem 0.65rem;
+    border-radius: 4px;
+    background: rgba(30,95,212,0.1);
+    border: 1px solid rgba(30,95,212,0.2);
+    font-size: 0.75rem;
+    color: var(--gray-light);
+  }
+
+  /* ── ACHIEVEMENTS ── */
+  #achievements { background: var(--blue-dark); }
+  .ach-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 1.5rem; }
+  .ach-card {
+    background: rgba(10,22,40,0.6);
+    border: 1px solid rgba(59,130,246,0.15);
+    border-radius: 14px;
+    padding: 2rem;
+    text-align: center;
+    transition: border-color 0.3s, transform 0.3s;
+  }
+  .ach-card:hover { border-color: rgba(6,182,212,0.4); transform: translateY(-5px); }
+  .ach-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .ach-val { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--cyan); }
+  .ach-title { font-size: 0.9rem; font-weight: 600; color: var(--white); margin: 0.4rem 0; }
+  .ach-desc { font-size: 0.78rem; color: var(--gray-mid); line-height: 1.6; }
+
+  /* ── CERTIFICATIONS ── */
+  #certifications { background: var(--navy); }
+  .certs-list { display: flex; flex-direction: column; gap: 1rem; max-width: 700px; }
+  .cert-item {
+    display: flex;
+    align-items: center;
+    gap: 1.2rem;
+    background: rgba(13,36,68,0.5);
+    border: 1px solid rgba(59,130,246,0.15);
+    border-radius: 10px;
+    padding: 1.1rem 1.5rem;
+    transition: border-color 0.3s;
+  }
+  .cert-item:hover { border-color: rgba(6,182,212,0.4); }
+  .cert-dot { width: 10px; height: 10px; background: var(--cyan); border-radius: 50%; flex-shrink: 0; }
+  .cert-name { font-size: 0.9rem; font-weight: 500; color: var(--white); }
+  .cert-issuer { font-size: 0.75rem; color: var(--gray-mid); margin-top: 0.15rem; }
+
+  /* ── EDUCATION ── */
+  #education { background: var(--blue-dark); }
+  .edu-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .edu-card {
+    background: rgba(10,22,40,0.6);
+    border: 1px solid rgba(59,130,246,0.15);
+    border-radius: 14px;
+    padding: 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .edu-card::before { content:''; position:absolute; top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue-accent),var(--cyan)); }
+  .edu-card:hover { border-color: rgba(6,182,212,0.4); }
+  .edu-degree { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--white); margin-bottom: 0.4rem; }
+  .edu-school { font-size: 0.9rem; color: var(--cyan); margin-bottom: 0.3rem; }
+  .edu-period { font-size: 0.8rem; color: var(--gray-mid); }
+  .edu-grade { display: inline-block; margin-top: 1rem; padding: 0.25rem 0.75rem; background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3); border-radius: 4px; font-size: 0.75rem; color: var(--gold); }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--navy); }
+  .contact-inner {
+    background: linear-gradient(135deg, var(--blue-dark), rgba(30,95,212,0.15));
+    border: 1px solid rgba(59,130,246,0.2);
+    border-radius: 20px;
+    padding: 4rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .contact-inner::before {
+    content: '';
+    position: absolute;
+    top: -50%; left: -50%;
+    width: 200%; height: 200%;
+    background: radial-gradient(circle at center, rgba(6,182,212,0.05) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .contact-title { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; color: var(--white); margin-bottom: 1rem; }
+  .contact-sub { font-size: 1rem; color: var(--gray-light); margin-bottom: 2.5rem; max-width: 500px; margin-left: auto; margin-right: auto; }
+  .contact-items { display: flex; justify-content: center; flex-wrap: wrap; gap: 1.5rem; margin-bottom: 2.5rem; }
+  .contact-chip {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.7rem 1.4rem;
+    background: rgba(13,36,68,0.8);
+    border: 1px solid rgba(59,130,246,0.25);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    color: var(--gray-light);
+    text-decoration: none;
+    transition: border-color 0.3s, color 0.3s;
+  }
+  .contact-chip:hover { border-color: var(--cyan); color: var(--cyan); }
+  .contact-chip .icon { font-size: 1.1rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid rgba(59,130,246,0.1);
+    font-size: 0.78rem;
+    color: var(--gray-mid);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { gap: 1.2rem; }
+    #hero { grid-template-columns: 1fr; padding: 6rem 1.5rem 3rem; }
+    .hero-image-wrap { display: none; }
+    section { padding: 4rem 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .edu-grid { grid-template-columns: 1fr; }
+    .contact-inner { padding: 2.5rem 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">PK.</div>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#projects">Projects</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <div class="hero-text">
+    <div class="hero-badge">📊 Data Analyst · US CPG Retail</div>
+    <h1 class="hero-name">Pavan<br/><span>Kumar P</span></h1>
+    <p class="hero-role">Senior Associate Business Analyst @ Genpact</p>
+    <p class="hero-summary">
+      Transforming complex retail data into actionable insights for major US retailers including Walmart, Target, and Costco. Specializing in Circana POS analytics, market share analysis, and workflow automation.
+    </p>
+    <div class="hero-cta">
+      <a href="#contact" class="btn-primary">Get In Touch</a>
+      <a href="#experience" class="btn-secondary">View Work</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><div class="stat-num">3+</div><div class="stat-label">Years Experience</div></div>
+      <div class="stat"><div class="stat-num">800+</div><div class="stat-label">Reports / Year</div></div>
+      <div class="stat"><div class="stat-num">170+</div><div class="stat-label">Hours Saved</div></div>
+      <div class="stat"><div class="stat-num">3×</div><div class="stat-label">CSAT Awards</div></div>
+    </div>
+  </div>
+
+  <div class="hero-image-wrap">
+    <div class="hero-image-frame">
+      <!-- Profile photo – replace src with actual path if hosting locally -->
+      <div class="hero-photo-placeholder">
+        PK
+        <span>Data Analyst</span>
+      </div>
+      <div class="float-card card-a">
+        <div class="fc-label">Client Account</div>
+        <div class="fc-value">$0.5M</div>
+        <div class="fc-sub">Supported annually</div>
+      </div>
+      <div class="float-card card-b">
+        <div class="fc-label">Reporting Accuracy</div>
+        <div class="fc-value">100%</div>
+        <div class="fc-sub">Zero escalations</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-tag">Who I Am</div>
+  <h2 class="section-title">About <em>Me</em></h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm a data analyst with over 3 years of experience in retail and CPG analytics, with a strong focus on the US market. At Genpact, I work with Circana (IRI/NPD) POS data to deliver strategic insights for some of the world's largest retailers.</p>
+      <p>My work spans end-to-end analytics — from raw data extraction and cleaning, to insight generation, reporting automation, and executive-level storytelling. I've built dashboards, automated recurring reports, and led cross-functional analyst teams.</p>
+      <p>With an MBA in Marketing and Business Analytics from Presidency University, I bridge business strategy with data science — translating numbers into decisions that drive category growth.</p>
+      <p><strong style="color:var(--white)">Languages:</strong> <span style="color:var(--gray-light)">English · Kannada · Telugu · Hindi</span></p>
+      <p style="margin-top:0.5rem"><strong style="color:var(--white)">Interests:</strong> <span style="color:var(--gray-light)">Travelling · Food · Fitness · Self Improvement</span></p>
+    </div>
+    <div>
+      <div class="skills-wrap">
+        <div class="skill-item">
+          <div class="skill-header"><span>Advanced Excel & Data Analysis</span><span>95%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:95%" data-w="95%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span>Power BI & Tableau</span><span>85%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:85%" data-w="85%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span>Circana POS & Panel Data</span><span>90%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:90%" data-w="90%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span>Market Share Analysis</span><span>88%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:88%" data-w="88%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span>SQL</span><span>70%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:70%" data-w="70%"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-header"><span>Reporting Automation</span><span>87%</span></div>
+          <div class="skill-bar"><div class="skill-fill" style="width:87%" data-w="87%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-tag">Career</div>
+  <h2 class="section-title">Work <em>Experience</em></h2>
+
+  <div class="exp-card">
+    <div class="exp-header">
+      <div>
+        <div class="exp-role">Senior Associate Business Analyst</div>
+        <div class="exp-company">Genpact PVT LTD · Bengaluru, India</div>
+      </div>
+      <div class="exp-period">Aug 2023 – Present</div>
+    </div>
+    <ul class="exp-bullets">
+      <li>Analyze Circana POS, panel, and supply chain datasets across major US retailers including Walmart, Target, and Costco to evaluate category performance and market trends.</li>
+      <li>Deliver 800+ recurring and ad-hoc analytical reports annually, supporting strategic insights for a $0.5M client account.</li>
+      <li>Conduct market share analysis and consumer purchase behavior studies to identify category growth opportunities across retail channels.</li>
+      <li>Perform distribution void mapping and leakage analysis to identify retail expansion opportunities and improve product placement strategies.</li>
+      <li>Support retailer pitch initiatives by preparing competitor deep-dive reports and category insights.</li>
+      <li>Streamlined reporting workflows for apparel and footwear analytics accounts, saving 170+ operational hours annually and improving reporting turnaround time.</li>
+      <li>Maintained 100% reporting accuracy and zero client escalations, earning three CSAT awards for service excellence.</li>
+      <li>Led a cross-functional team of 5 analysts managing analytics deliverables across multiple client accounts.</li>
+    </ul>
+  </div>
+
+  <div class="exp-card">
+    <div class="exp-header">
+      <div>
+        <div class="exp-role">Senior Customer Support Executive</div>
+        <div class="exp-company">Medical Mentor · Bengaluru, India</div>
+      </div>
+      <div class="exp-period">May 2023 – Jul 2023</div>
+    </div>
+    <ul class="exp-bullets">
+      <li>Managed customer queries and provided high-quality support in a healthcare-adjacent environment.</li>
+    </ul>
+  </div>
+
+  <div class="exp-card">
+    <div class="exp-header">
+      <div>
+        <div class="exp-role">SEO & Digital Content Marketing</div>
+        <div class="exp-company">GetMyUni · Bengaluru, India</div>
+      </div>
+      <div class="exp-period">Jun 2022 – Aug 2022</div>
+    </div>
+    <ul class="exp-bullets">
+      <li>Developed and optimized digital content to improve search engine visibility and organic traffic.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-tag">Key Projects</div>
+  <h2 class="section-title">Featured <em>Projects</em></h2>
+  <div class="projects-grid">
+    <div class="proj-card">
+      <div class="proj-icon">📈</div>
+      <div class="proj-title">Retail Channel Market Share & Trend Analysis</div>
+      <div class="proj-desc">Analyzed retail sales trends across multiple US retailers using Circana POS data. Identified shifts in market share and consumer demand patterns to support client category strategy, enabling data-driven assortment decisions.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">Circana POS</span>
+        <span class="proj-tag">Market Share</span>
+        <span class="proj-tag">Trend Analysis</span>
+        <span class="proj-tag">Excel</span>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-icon">📦</div>
+      <div class="proj-title">CPG Category Performance Reporting</div>
+      <div class="proj-desc">Generated recurring monthly and quarterly reports covering sales performance, inventory movement, promotions, and category growth metrics. Delivered actionable insights that supported retail strategy and assortment planning for a major CPG client.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">Power BI</span>
+        <span class="proj-tag">Category Analytics</span>
+        <span class="proj-tag">Automation</span>
+        <span class="proj-tag">Tableau</span>
+      </div>
+    </div>
+    <div class="proj-card">
+      <div class="proj-icon">🔍</div>
+      <div class="proj-title">Ad-Hoc Competitive Analytics</div>
+      <div class="proj-desc">Delivered custom analyses for client queries related to competitor performance, promotional effectiveness, and consumer trends. Supported pitch decks with competitor deep-dive reports and market opportunity frameworks.</div>
+      <div class="proj-tags">
+        <span class="proj-tag">Competitive Analysis</span>
+        <span class="proj-tag">Consumer Behavior</span>
+        <span class="proj-tag">SQL</span>
+        <span class="proj-tag">Reporting</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-tag">Expertise</div>
+  <h2 class="section-title">Core <em>Skills</em></h2>
+  <div class="skills-grid">
+    <div class="skill-cat">
+      <div class="skill-cat-title">📊 Data Analysis & BI</div>
+      <div class="skill-tags">
+        <span class="skill-chip">SQL (Basic)</span>
+        <span class="skill-chip">Advanced Excel</span>
+        <span class="skill-chip">Data Analysis</span>
+        <span class="skill-chip">Data Mapping</span>
+        <span class="skill-chip">Data Integration</span>
+      </div>
+    </div>
+    <div class="skill-cat">
+      <div class="skill-cat-title">📉 Visualization & Reporting</div>
+      <div class="skill-tags">
+        <span class="skill-chip">Power BI</span>
+        <span class="skill-chip">Tableau</span>
+        <span class="skill-chip">Dashboard Dev</span>
+        <span class="skill-chip">Reporting Automation</span>
+      </div>
+    </div>
+    <div class="skill-cat">
+      <div class="skill-cat-title">🛒 Retail Analytics</div>
+      <div class="skill-tags">
+        <span class="skill-chip">Circana POS Data</span>
+        <span class="skill-chip">Panel Data</span>
+        <span class="skill-chip">Market Share</span>
+        <span class="skill-chip">Demand Forecasting</span>
+      </div>
+    </div>
+    <div class="skill-cat">
+      <div class="skill-cat-title">💡 Business Insights</div>
+      <div class="skill-tags">
+        <span class="skill-chip">Consumer Behavior</span>
+        <span class="skill-chip">Competitive Analysis</span>
+        <span class="skill-chip">Trend Analysis</span>
+        <span class="skill-chip">Category Performance</span>
+      </div>
+    </div>
+    <div class="skill-cat">
+      <div class="skill-cat-title">🤖 AI & Tech</div>
+      <div class="skill-tags">
+        <span class="skill-chip">Generative AI</span>
+        <span class="skill-chip">AI Reasoning Models</span>
+        <span class="skill-chip">Data Structures</span>
+        <span class="skill-chip">Python (Basic)</span>
+      </div>
+    </div>
+    <div class="skill-cat">
+      <div class="skill-cat-title">🎯 Marketing</div>
+      <div class="skill-tags">
+        <span class="skill-chip">Digital Marketing</span>
+        <span class="skill-chip">SEO</span>
+        <span class="skill-chip">MBA Analytics</span>
+        <span class="skill-chip">Business Strategy</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ACHIEVEMENTS -->
+<section id="achievements">
+  <div class="section-tag">Impact</div>
+  <h2 class="section-title">Key <em>Achievements</em></h2>
+  <div class="ach-grid">
+    <div class="ach-card">
+      <div class="ach-icon">🏆</div>
+      <div class="ach-val">3×</div>
+      <div class="ach-title">CSAT Awards</div>
+      <div class="ach-desc">Client Satisfaction awards for maintaining high reporting accuracy and zero escalation incidents</div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-icon">⏱️</div>
+      <div class="ach-val">170+</div>
+      <div class="ach-title">Hours Saved / Year</div>
+      <div class="ach-desc">Optimized analytics workflows generating significant annual productivity gains</div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-icon">💰</div>
+      <div class="ach-val">$10K</div>
+      <div class="ach-title">Cost Savings</div>
+      <div class="ach-desc">Operational cost savings generated through workflow optimization and automation</div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-icon">👥</div>
+      <div class="ach-val">5</div>
+      <div class="ach-title">Team Led</div>
+      <div class="ach-desc">Led a cross-functional team of analysts managing 800+ reports annually</div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-icon">✅</div>
+      <div class="ach-val">100%</div>
+      <div class="ach-title">Reporting Accuracy</div>
+      <div class="ach-desc">Maintained perfect reporting accuracy with zero client escalations throughout tenure</div>
+    </div>
+    <div class="ach-card">
+      <div class="ach-icon">📊</div>
+      <div class="ach-val">$0.5M</div>
+      <div class="ach-title">Client Account</div>
+      <div class="ach-desc">Supported a high-value $0.5M client account with strategic analytical insights</div>
+    </div>
+  </div>
+</section>
+
+<!-- CERTIFICATIONS -->
+<section id="certifications">
+  <div class="section-tag">Credentials</div>
+  <h2 class="section-title">Certifications &amp; <em>Learning</em></h2>
+  <div class="certs-list">
+    <div class="cert-item">
+      <div class="cert-dot"></div>
+      <div>
+        <div class="cert-name">Generative AI Intermediate Certification</div>
+        <div class="cert-issuer">Genpact</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-dot"></div>
+      <div>
+        <div class="cert-name">Data Literacy Certification</div>
+        <div class="cert-issuer">Genpact</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-dot"></div>
+      <div>
+        <div class="cert-name">Data Scientist Master's Program</div>
+        <div class="cert-issuer">Simplilearn</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-dot"></div>
+      <div>
+        <div class="cert-name">Introduction to SQL & Python</div>
+        <div class="cert-issuer">Simplilearn</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-dot"></div>
+      <div>
+        <div class="cert-name">Introduction to Applied Data Science with Python</div>
+        <div class="cert-issuer">University of Michigan (via Coursera)</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-dot"></div>
+      <div>
+        <div class="cert-name">Introduction to Artificial Intelligence</div>
+        <div class="cert-issuer">Online Certification</div>
+      </div>
+    </div>
+    <div class="cert-item">
+      <div class="cert-dot"></div>
+      <div>
+        <div class="cert-name">Fundamentals of Digital Marketing</div>
+        <div class="cert-issuer">Google Digital Garage</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-tag">Education</div>
+  <h2 class="section-title">Academic <em>Background</em></h2>
+  <div class="edu-grid">
+    <div class="edu-card">
+      <div class="edu-degree">MBA · Marketing & Business Analytics</div>
+      <div class="edu-school">Presidency University, Bangalore</div>
+      <div class="edu-period">2021 – 2023</div>
+      <div class="edu-grade">Grade: 8.0 / 10</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-degree">BBA · Business Administration & Management</div>
+      <div class="edu-school">KLE's College of Business Administration, Hubli</div>
+      <div class="edu-period">June 2018 – April 2021</div>
+      <div class="edu-grade">Percentage: 70%</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-inner">
+    <h2 class="contact-title">Let's Connect</h2>
+    <p class="contact-sub">Open to new opportunities in data analytics, CPG retail, and business intelligence. Let's talk.</p>
+    <div class="contact-items">
+      <a href="mailto:pavanchoudary7204@gmail.com" class="contact-chip">
+        <span class="icon">✉️</span> pavanchoudary7204@gmail.com
+      </a>
+      <a href="tel:+919900477669" class="contact-chip">
+        <span class="icon">📱</span> +91 9900477669
+      </a>
+      <a href="https://www.linkedin.com/in/pavan-kumarp-63b018247" target="_blank" class="contact-chip">
+        <span class="icon">💼</span> LinkedIn Profile
+      </a>
+      <a href="#" class="contact-chip">
+        <span class="icon">📍</span> Bengaluru, Karnataka, India
+      </a>
+    </div>
+    <a href="mailto:pavanchoudary7204@gmail.com" class="btn-primary">Send a Message</a>
+  </div>
+</section>
+
+<footer>
+  © 2025 Pavan Kumar P · Built with passion for data analytics
+</footer>
+
+<script>
+  // Skill bars animation on scroll
+  const fills = document.querySelectorAll('.skill-fill');
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('animate');
+      }
+    });
+  }, { threshold: 0.3 });
+  fills.forEach(f => obs.observe(f));
+
+  // Smooth nav highlight
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-links a');
+  const navObs = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(l => {
+          l.style.color = '';
+          if (l.getAttribute('href') === '#' + e.target.id) {
+            l.style.color = 'var(--cyan)';
+          }
+        });
+      }
+    });
+  }, { threshold: 0.4 });
+  sections.forEach(s => navObs.observe(s));
+</script>
+
+</body>
+</html>
