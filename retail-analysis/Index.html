@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NovaCPG — Consumer Purchase Behavior Dashboard 2024</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#0d1117;color:#f0f6fc;font-family:'DM Sans',sans-serif;min-height:100vh}
+
+  .topbar{background:#161b22;border-bottom:1px solid #21262d;padding:14px 32px;display:flex;align-items:center;justify-content:space-between}
+  .brand{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#00e896;letter-spacing:1px}
+  .brand span{color:#8b949e;font-size:12px;font-family:'DM Sans',sans-serif;font-weight:400;margin-left:12px;letter-spacing:0}
+  .badge{background:rgba(0,232,150,0.1);border:1px solid rgba(0,232,150,0.3);color:#00e896;font-size:11px;padding:4px 12px;border-radius:20px}
+
+  .wrap{max-width:1200px;margin:0 auto;padding:24px 24px 48px}
+
+  .meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px}
+  .meta-title{font-family:'Bebas Neue',sans-serif;font-size:28px;color:#fff;letter-spacing:1px}
+  .meta-sub{font-size:12px;color:#8b949e;margin-top:4px}
+  .meta-right{text-align:right;font-size:11px;color:#8b949e;line-height:1.8}
+  .meta-right strong{color:#00e896}
+
+  .kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+  .kpi{background:#161b22;border:1px solid #21262d;border-radius:12px;padding:18px 16px;position:relative;overflow:hidden}
+  .kpi::before{content:'';position:absolute;top:0;left:0;width:3px;height:100%;background:#00e896}
+  .kpi-label{font-size:11px;color:#8b949e;letter-spacing:.5px;text-transform:uppercase;margin-bottom:6px}
+  .kpi-value{font-family:'Bebas Neue',sans-serif;font-size:30px;color:#00e896;line-height:1}
+  .kpi-change{font-size:11px;color:#00e896;margin-top:4px}
+  .kpi-change.neg{color:#ff6b6b}
+  .kpi-sub{font-size:10px;color:#8b949e;margin-top:2px}
+
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+  .full{grid-column:1/-1}
+
+  .card{background:#161b22;border:1px solid #21262d;border-radius:12px;padding:20px}
+  .card-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:4px}
+  .card-sub{font-size:11px;color:#8b949e;margin-bottom:16px}
+  .chart-wrap{position:relative}
+
+  table{width:100%;border-collapse:collapse;font-size:12px}
+  thead tr{background:#0d1117}
+  thead th{color:#8b949e;font-weight:500;padding:8px 12px;text-align:left;border-bottom:1px solid #21262d;font-size:11px;letter-spacing:.5px;text-transform:uppercase}
+  tbody tr{border-bottom:1px solid #21262d;transition:background .15s}
+  tbody tr:hover{background:#1c2128}
+  tbody td{padding:9px 12px;color:#f0f6fc}
+  .pill{display:inline-block;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:700}
+  .pill-green{background:rgba(0,232,150,.12);color:#00e896;border:1px solid rgba(0,232,150,.25)}
+  .pill-gold{background:rgba(255,215,0,.1);color:#ffd700;border:1px solid rgba(255,215,0,.2)}
+  .pill-gray{background:rgba(139,148,158,.1);color:#8b949e;border:1px solid rgba(139,148,158,.2)}
+  .pill-red{background:rgba(255,107,107,.1);color:#ff6b6b;border:1px solid rgba(255,107,107,.2)}
+
+  .insight-bar{background:rgba(0,232,150,.06);border-left:3px solid #00e896;border-radius:0 8px 8px 0;padding:10px 14px;margin-bottom:10px;font-size:12px;color:#c9d1d9;line-height:1.5}
+  .insight-bar strong{color:#00e896}
+
+  .analyst-footer{background:#161b22;border:1px solid #21262d;border-radius:12px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;margin-top:24px}
+  .analyst-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#00e896,#00b8ff);display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:18px;color:#000;flex-shrink:0}
+  .analyst-info{margin-left:14px}
+  .analyst-name{font-weight:700;font-size:14px;color:#fff}
+  .analyst-role{font-size:11px;color:#8b949e;margin-top:2px}
+  .analyst-contact{text-align:right;font-size:11px;color:#8b949e;line-height:1.8}
+  .analyst-contact a{color:#00e896;text-decoration:none}
+
+  @media(max-width:768px){.kpi-row{grid-template-columns:1fr 1fr}.grid-2,.grid-3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">NovaCPG Analytics <span>Consumer Purchase Behavior Report · FY 2024</span></div>
+  <div class="badge">CONFIDENTIAL</div>
+</div>
+
+<div class="wrap">
+
+  <div class="meta">
+    <div>
+      <div class="meta-title">Consumer Purchase Behavior Dashboard</div>
+      <div class="meta-sub">Fiscal Year 2024 · Full-Year Analysis · US Retail Channels · 2.4M+ Transactions</div>
+    </div>
+    <div class="meta-right">
+      <div>Analyst: <strong>Pavan Kumar P</strong></div>
+      <div>Genpact Analytics Practice</div>
+      <div>Report Date: March 2024</div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-label">Total Revenue</div>
+      <div class="kpi-value">$74.3M</div>
+      <div class="kpi-change">▲ +18.6% YoY</div>
+      <div class="kpi-sub">vs $62.6M in FY 2023</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Unique Shoppers</div>
+      <div class="kpi-value">340K</div>
+      <div class="kpi-change">▲ +16.8% YoY</div>
+      <div class="kpi-sub">vs 291K in FY 2023</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Avg Basket Size</div>
+      <div class="kpi-value">$48.60</div>
+      <div class="kpi-change">▲ +9.9% YoY</div>
+      <div class="kpi-sub">vs $44.20 in FY 2023</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Repeat Purchase Rate</div>
+      <div class="kpi-value">38.4%</div>
+      <div class="kpi-change">▲ +4.2pp YoY</div>
+      <div class="kpi-sub">vs 34.2% in FY 2023</div>
+    </div>
+  </div>
+
+  <!-- Row 1 -->
+  <div class="grid-2">
+    <div class="card" style="grid-column:1/2">
+      <div class="card-title">Monthly Revenue Trend</div>
+      <div class="card-sub">FY 2024 — USD Millions</div>
+      <div class="chart-wrap"><canvas id="revChart" height="200"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Category Revenue Mix</div>
+      <div class="card-sub">Share of Total Revenue</div>
+      <div class="chart-wrap"><canvas id="catChart" height="200"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Row 2 -->
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Sales by Retail Channel</div>
+      <div class="card-sub">Share of total sales</div>
+      <div class="chart-wrap"><canvas id="chanChart" height="200"></canvas></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Repeat Purchase Frequency</div>
+      <div class="card-sub">% of Customer Base</div>
+      <div class="chart-wrap"><canvas id="repChart" height="200"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Row 3 full -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title">Buyer Demographics by Age & Gender</div>
+    <div class="card-sub">% Share of transactions</div>
+    <div class="chart-wrap"><canvas id="demoChart" height="130"></canvas></div>
+  </div>
+
+  <!-- Tables Row -->
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-title">Category Performance</div>
+      <div class="card-sub">FY 2024 Full Year</div>
+      <table>
+        <thead><tr><th>Category</th><th>Revenue</th><th>Share</th><th>YoY</th><th>Trend</th></tr></thead>
+        <tbody>
+          <tr><td>Snacks & Chips</td><td>$20.8M</td><td>28%</td><td>+14.2%</td><td><span class="pill pill-gold">STABLE</span></td></tr>
+          <tr><td>Beverages</td><td>$16.3M</td><td>22%</td><td>+19.8%</td><td><span class="pill pill-green">GROWING</span></td></tr>
+          <tr><td>Personal Care</td><td>$13.4M</td><td>18%</td><td>+31.0%</td><td><span class="pill pill-green">GROWING</span></td></tr>
+          <tr><td>Dairy</td><td>$10.4M</td><td>14%</td><td>+8.5%</td><td><span class="pill pill-gold">STABLE</span></td></tr>
+          <tr><td>Frozen Foods</td><td>$8.2M</td><td>11%</td><td>+12.1%</td><td><span class="pill pill-green">GROWING</span></td></tr>
+          <tr><td>Others</td><td>$5.2M</td><td>7%</td><td>+5.3%</td><td><span class="pill pill-gray">FLAT</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-title">Loyalty Segment Analysis</div>
+      <div class="card-sub">Customer Value by Purchase Frequency</div>
+      <table>
+        <thead><tr><th>Segment</th><th>Customers</th><th>Rev Share</th><th>Avg Spend</th><th>Churn</th></tr></thead>
+        <tbody>
+          <tr><td>1x Buyers</td><td>115,600</td><td>18%</td><td>$115</td><td><span class="pill pill-red">HIGH</span></td></tr>
+          <tr><td>2–3x Buyers</td><td>95,200</td><td>24%</td><td>$234</td><td><span class="pill pill-gold">MEDIUM</span></td></tr>
+          <tr><td>4–6x Buyers</td><td>74,800</td><td>17%</td><td>$412</td><td><span class="pill pill-green">LOW</span></td></tr>
+          <tr><td>Loyal (7x+)</td><td>54,400</td><td>41%</td><td>$560</td><td><span class="pill pill-green">VERY LOW</span></td></tr>
+        </tbody>
+      </table>
+      <div style="margin-top:14px">
+        <div class="insight-bar"><strong>Key Finding:</strong> Loyal buyers (16% of base) drive 41% of revenue. A 5% uplift in retention = <strong>+$3.7M</strong> additional annual revenue.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Insights -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-title" style="margin-bottom:14px">Key Insights & Recommendations</div>
+    <div class="grid-2" style="margin-bottom:0;gap:12px">
+      <div class="insight-bar"><strong>01 · Double Down on E-commerce:</strong> E-commerce grew +72% YoY, now the #2 channel. Invest in digital shelf optimisation and D2C subscription models.</div>
+      <div class="insight-bar"><strong>02 · Target the 35–44 Loyalty Core:</strong> Highest loyalty rate (31.8%) and basket size. Develop loyalty tiers with personalised promotions for this cohort.</div>
+      <div class="insight-bar"><strong>03 · Reduce 1x Buyer Churn:</strong> 34% of buyers only purchased once. Implement post-purchase email sequences and trial-to-loyalty discount offers.</div>
+      <div class="insight-bar"><strong>04 · Capitalise on Q4 Momentum:</strong> Q4 drives 37% of annual revenue. Plan inventory 60 days early and pre-load digital campaigns from mid-September.</div>
+      <div class="insight-bar"><strong>05 · Personal Care Acceleration:</strong> Fastest category at +31% growth. Increase SKU depth and allocate 25% more trade spend in FY 2025.</div>
+      <div class="insight-bar"><strong>06 · Club Store Volume Play:</strong> Club channel grew +24% YoY; multi-pack SKUs drove 68% of club revenue — expand bulk SKU assortment.</div>
+    </div>
+  </div>
+
+  <!-- Analyst Footer -->
+  <div class="analyst-footer">
+    <div style="display:flex;align-items:center">
+      <div class="analyst-avatar">PK</div>
+      <div class="analyst-info">
+        <div class="analyst-name">Pavan Kumar P</div>
+        <div class="analyst-role">Senior Data Analyst · Genpact Analytics Practice · Bengaluru, India</div>
+        <div class="analyst-role" style="margin-top:3px">3+ Years · 800+ Reports/yr · US CPG Retail Specialist</div>
+      </div>
+    </div>
+    <div class="analyst-contact">
+      <div><a href="mailto:pavanchoudary7204@gmail.com">pavanchoudary7204@gmail.com</a></div>
+      <div><a href="https://www.linkedin.com/in/pavan-kumarp-63b018247" target="_blank">LinkedIn Profile</a></div>
+      <div><a href="https://choudary7204.github.io/PavanAnalyst.github.io/" target="_blank">Portfolio Website</a></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const TEAL='#00e896', BLUE='#00b8ff', GOLD='#ffd700', RED='#ff6b6b',
+      PURPLE='#c084fc', GRAY='#8b949e', DARK='#21262d', MID='#161b22';
+
+Chart.defaults.color=GRAY;
+Chart.defaults.borderColor=DARK;
+Chart.defaults.font.family="'DM Sans', sans-serif";
+Chart.defaults.font.size=11;
+
+// Revenue line
+new Chart(document.getElementById('revChart'),{
+  type:'line',
+  data:{
+    labels:['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],
+    datasets:[{
+      label:'Revenue ($M)',
+      data:[4.2,3.8,5.1,4.9,5.8,6.3,5.5,6.1,7.2,8.4,9.1,10.3],
+      borderColor:TEAL, backgroundColor:'rgba(0,232,150,0.08)',
+      borderWidth:2.5, pointRadius:4, pointBackgroundColor:TEAL,
+      fill:true, tension:0.35
+    }]
+  },
+  options:{
+    responsive:true, plugins:{legend:{display:false},
+    tooltip:{callbacks:{label:c=>`$${c.raw}M`}}},
+    scales:{
+      x:{grid:{color:DARK}},
+      y:{grid:{color:DARK},ticks:{callback:v=>`$${v}M`}}
+    }
+  }
+});
+
+// Category doughnut
+new Chart(document.getElementById('catChart'),{
+  type:'doughnut',
+  data:{
+    labels:['Snacks & Chips','Beverages','Personal Care','Dairy','Frozen Foods','Others'],
+    datasets:[{
+      data:[28,22,18,14,11,7],
+      backgroundColor:[TEAL,BLUE,GOLD,PURPLE,RED,GRAY],
+      borderColor:'#0d1117', borderWidth:2, hoverOffset:6
+    }]
+  },
+  options:{
+    responsive:true, cutout:'60%',
+    plugins:{legend:{position:'right',labels:{boxWidth:10,padding:12}}}
+  }
+});
+
+// Channel bar
+new Chart(document.getElementById('chanChart'),{
+  type:'bar',
+  data:{
+    labels:['In-Store','E-commerce','Club Stores','Drug Stores','Dollar Stores'],
+    datasets:[{
+      data:[42,28,16,8,6],
+      backgroundColor:[TEAL,'#21262d','#21262d','#21262d','#21262d'],
+      borderRadius:5, borderSkipped:false
+    }]
+  },
+  options:{
+    indexAxis:'y', responsive:true,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:{color:DARK},ticks:{callback:v=>`${v}%`}},
+      y:{grid:{color:'transparent'}}
+    }
+  }
+});
+
+// Repeat purchase
+new Chart(document.getElementById('repChart'),{
+  type:'bar',
+  data:{
+    labels:['1x Buyers','2-3x Buyers','4-6x Buyers','Loyal (7x+)'],
+    datasets:[{
+      data:[34,28,22,16],
+      backgroundColor:['#21262d',BLUE,TEAL,GOLD],
+      borderRadius:5, borderSkipped:false
+    }]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{display:false}},
+    scales:{
+      x:{grid:{color:'transparent'}},
+      y:{grid:{color:DARK},ticks:{callback:v=>`${v}%`}}
+    }
+  }
+});
+
+// Demographics grouped bar
+new Chart(document.getElementById('demoChart'),{
+  type:'bar',
+  data:{
+    labels:['18-24','25-34','35-44','45-54','55-64','65+'],
+    datasets:[
+      {label:'Male',  data:[8,18,22,16,10,6],  backgroundColor:BLUE,   borderRadius:3},
+      {label:'Female',data:[9,21,19,14,9,5],   backgroundColor:PURPLE, borderRadius:3}
+    ]
+  },
+  options:{
+    responsive:true,
+    plugins:{legend:{labels:{boxWidth:10}}},
+    scales:{
+      x:{grid:{color:'transparent'}},
+      y:{grid:{color:DARK},ticks:{callback:v=>`${v}%`}}
+    }
+  }
+});
+</script>
+</body>
+</html>
